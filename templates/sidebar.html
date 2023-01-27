@@ -1,21 +1,25 @@
 <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
     <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <a href="{% url 'base' %}" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <span class="fs-5 d-none d-sm-inline border-bottom">Home Finance</span>
         </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
             <li>
+                {% for budget in budgets %}
                 <a href="#budget" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                    <span class="ms-1 d-none d-sm-inline text-white">Budget</span> 
+                    <span class="ms-1 d-none d-sm-inline text-white">{{ budget.name }}</span> 
                 </a>
                 <ul class="collapse show nav flex-column ms-1" id="budget" data-bs-parent="#menu">
-                    <li><a href="#" class="text-white d-inline-flex text-decoration-none rounded">Transaction History</a></li>
+                    <li><a href="{% url 'add_expense' budget.id %}" class="text-white d-inline-flex text-decoration-none rounded" >Add Expense</a></li>
+                    <li><a href="{% url 'add_income' budget.id %}" class="text-white d-inline-flex text-decoration-none rounded" >Add Income</a></li>
+                    <li><a href="{% url 'transaction_history' budget.id %}" class="text-white d-inline-flex text-decoration-none rounded">Transaction History</a></li>
                     <li><a href="#" class="text-white d-inline-flex text-decoration-none rounded">Expenses Analysis</a></li>
                     <li><a href="#" class="text-white d-inline-flex text-decoration-none rounded">Incomes Analysis</a></li>
                     <li><a href="#" class="text-white d-inline-flex text-decoration-none rounded">Saving Goals</a></li>
                     <li><a href="#" class="text-white d-inline-flex text-decoration-none rounded">Settings</a></li>
                 </ul>
+                {% endfor %}
             </li>
             <li>
                 <a href="#account" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
@@ -30,3 +34,5 @@
         </ul>          
     </div>    
 </div>
+
+

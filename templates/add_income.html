@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if new %}
+  <h1>Add Income</h1>
+  {% else %}
+  <h1>Edit Income</h1>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {%if new %}
+    <input type="submit" value="Add">
+    {% else %}
+    <input type="submit" value="Edit">
+    {% endif %}
+  </form>
+{% endblock %}
