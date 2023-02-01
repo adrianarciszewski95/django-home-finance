@@ -1,10 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from djmoney.models.fields import MoneyField
+
+
 class Budget(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     password = models.CharField(max_length=100, blank=True, null=True)
+    balance = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     shared_with = models.ManyToManyField(User, related_name='shared_budgets', blank=True)
 
     def __str__(self):
@@ -35,6 +39,30 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.pk} - {self.budget} - {self.category} - {self.amount}"
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_transaction = Transaction.objects.get(pk=self.pk)
+            if self.is_income:
+                self.budget.balance -= old_transaction.amount
+            else:
+                self.budget.balance += old_transaction.amount
+            self.budget.save()
+
+        if self.is_income:
+            self.budget.balance += self.amount
+        else:
+            self.budget.balance -= self.amount
+        self.budget.save()
+        super(Transaction, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.is_income:
+            self.budget.balance -= self.amount
+        else:
+            self.budget.balance += self.amount
+        self.budget.save()
+        super().delete(*args, **kwargs)
 
 class SavingGoal(models.Model):
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)

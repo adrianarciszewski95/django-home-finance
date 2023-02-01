@@ -1,0 +1,46 @@
+{% extends 'homefinance.html' %}
+
+{% block content %}
+ 
+<form action="{% url 'budget_analyse' budget_id year month %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="previous_month" value="previous month">
+    <h1>{{ month }}  {{ year }}</h1>
+    <input type="submit" name="next_month" value="next month">
+</form>
+
+<h2>Expenses: {{ expense_sum }}</h2>
+<h2>Incomes: {{ income_sum }}</h2>
+<h2>Balance: {{ balance }}</h2>
+
+<h1>Expenses Categories</h1>
+<table>
+    <tr>
+      <th>Category</th>
+      <th>Amount Sum</th>
+    </tr>
+    {% for item in expenses_by_category %}
+      <tr>
+        <td>{{ item.category }}</td>
+        <td>{{ item.amount_sum }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+<h1>Incomes Categories</h1>
+<table>
+    <tr>
+      <th>Category</th>
+      <th>Amount Sum</th>
+    </tr>
+    {% for item in incomes_by_category %}
+      <tr>
+        <td>{{ item.category }}</td>
+        <td>{{ item.amount_sum }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+
+{% endblock %}
+

@@ -1,0 +1,11 @@
+{% extends 'homefinance.html' %}
+
+{% block content %}
+<a href="{% url 'create_budget' %}" class="btn btn-primary">Create Budget</a>
+    {% for budget in budgets %}
+        <h1> {{ budget.name }}</h1>
+        <h3> {{ budget.balance }}</h3>
+
+    {% endfor %}
+{% endblock %}
+

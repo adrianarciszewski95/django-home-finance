@@ -1,9 +1,12 @@
 from django.contrib.auth.models import User
 from .models import Budget
 
-class UserBudgetsMixin:
+from datetime import datetime
+
+class SidebarMixin:
     def dispatch(self, request, *args, **kwargs):
-        self.user = User.objects.get(username = 'ikswezsicra') #temporary until i create a login system
-        self.budgets = Budget.objects.filter(user = self.user)
+        self.budgets = Budget.objects.filter(user = request.user)
+        self.current_year = datetime.now().year
+        self.current_month = datetime.now().month
         return super().dispatch(request, *args, **kwargs)
 

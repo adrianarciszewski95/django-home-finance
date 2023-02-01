@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block site %}
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            {% include 'sidebar.html' %}
+            <div class="col py-3">
+                {% block content %} {% endblock content %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
